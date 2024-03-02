@@ -1,5 +1,5 @@
 {
-  "name": "with-docker",
+  "name": "ryuk",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -16,7 +16,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@repo/eslint-config": "*",
+    "@ryuk/eslint-config": "*",
     "prettier": "^3.1.1",
     "turbo": "latest"
   },

@@ -1,5 +1,5 @@
 {
-  "name": "@repo/logger",
+  "name": "@ryuk/logger",
   "version": "0.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -15,15 +15,15 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "@repo/jest-presets/jest/node"
+    "preset": "@ryuk/jest-presets/jest/node"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
     "eslint": "^8.56.0",
-    "@repo/eslint-config": "*",
+    "@ryuk/eslint-config": "*",
     "jest": "^29.7.0",
-    "@repo/jest-presets": "*",
-    "@repo/typescript-config": "*",
+    "@ryuk/jest-presets": "*",
+    "@ryuk/typescript-config": "*",
     "typescript": "^5.3.3"
   }
 }
