@@ -1,14 +1,23 @@
-# Turborepo Docker starter
+# Ryuk
 
-This is an official Docker starter Turborepo.
 
-## Using this example
-
-Run the following command:
+Run the following command to install:
 
 ```sh
-npx create-turbo@latest -e with-docker
+yarn 
 ```
+
+For Dev:
+
+```sh
+yarn dev
+```
+To build
+
+```sh
+yarn build
+```
+
 
 ## What's inside?
 
