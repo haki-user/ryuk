@@ -15,7 +15,8 @@ var storage = multer.diskStorage({
 export const router = Router();
 
 router.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.send(`
+  `);
 });
 router.get("/message/:name", (req, res) => {
   return res.json({ message: `hello ${req.params.name}` });

@@ -1,15 +1,12 @@
-import type { RequestHandler, Request, Response } from "express";
+import type { RequestHandler } from "express";
 import { uploadAudio, getAudio } from "../services/storage";
 
-export const uploadAudioController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const uploadAudioController: RequestHandler = async (req, res) => {
   try {
-    if (!req.file || !req.file.path)
+    if (!req.file || !req.file.filename)
       return res.status(400).json({ error: "No audio file provided" });
-    const { path } = req.file;
-    const { audioUrl } = await uploadAudio(path);
+    const { filename } = req.file;
+    const { audioUrl } = await uploadAudio(filename);
     return res.json({ audioUrl });
   } catch (e) {
     console.log(e);
@@ -17,10 +14,7 @@ export const uploadAudioController: RequestHandler = async (
   }
 };
 
-export const getAudioController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const getAudioController: RequestHandler = async (req, res) => {
   const { fileId } = req.params;
   try {
     const { fileData, file } = await getAudio({ fileId });

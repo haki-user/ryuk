@@ -7,7 +7,6 @@
 import { log } from "@ryuk/logger";
 import { AssemblyAI } from "assemblyai";
 
-
 const client = new AssemblyAI({
   apiKey: "b1cc52f1568b47af80f2bbee69fa6de8",
 });
