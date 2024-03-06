@@ -7,7 +7,12 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const genAI = new GoogleGenerativeAI("AIzaSyCnSIeB8mFAE0yo-SJuy-OTysykAsHvj10");
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  throw new Error("Gemini environment variable not set");
+}
+
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const chat = async () => {
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });

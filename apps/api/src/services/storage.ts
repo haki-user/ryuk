@@ -1,15 +1,24 @@
 import { log } from "@ryuk/logger";
 import sdk, { InputFile, Permission, Role } from "node-appwrite";
 
+const APPWRITE_API_KEY = process.env.APPWRITE_API_KEY;
+const APPWRITE_ENDPOINT = process.env.APPWRITE_ENDPOINT;
+const APPWRITE_PROJECT_ID = process.env.APPWRITE_PROJECT_ID;
+const APPWRITE_STORAGE_BUCKET_ID = process.env.APPWRITE_STORAGE_BUCKET_ID;
+if (
+  !APPWRITE_API_KEY ||
+  !APPWRITE_ENDPOINT ||
+  !APPWRITE_PROJECT_ID ||
+  !APPWRITE_STORAGE_BUCKET_ID
+) {
+  throw new Error("Appwrite environment variables not set");
+}
+
 const client = new sdk.Client()
-  .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject("65df676aaa7599f7b244")
-  .setKey(
-    "6a56177a49b886a32827466c0b100583f406d65a3d2e56ed4da69307f041b88fe5f27c2801cf2d341bd750f499d9d723ecb1dfc4e7589990d40632a82e53f8e8a50db7d7650eb6b7ce1595fb41a17f0537d4abfbb2d2749c6b576f924369f4465fcf115771eb77e1a641d4ce79082272e7e2d33e503b080bdd08344075e84881"
-  );
-const bucketId = "65df67c6c811ff0d5711";
+  .setEndpoint(APPWRITE_ENDPOINT)
+  .setProject(APPWRITE_PROJECT_ID)
+  .setKey(APPWRITE_API_KEY);
 const permissions = ["*"];
-const audioCollection = "65df67c6c811ff0d5711";
 
 /**
  * Retrieves an audio file from the Appwrite storage.
@@ -22,9 +31,12 @@ export const getAudio = async ({ fileId }: { fileId: string }) => {
     // Initialize Appwrite storage
     const storage = new sdk.Storage(client);
     // Get file info
-    const file = await storage.getFile(bucketId, fileId);
+    const file = await storage.getFile(APPWRITE_STORAGE_BUCKET_ID, fileId);
     // Download audio file
-    const fileData = await storage.getFileDownload(bucketId, fileId);
+    const fileData = await storage.getFileDownload(
+      APPWRITE_STORAGE_BUCKET_ID,
+      fileId
+    );
     return { fileData, file };
   } catch (e) {
     log(e);
@@ -40,11 +52,9 @@ export const getAudio = async ({ fileId }: { fileId: string }) => {
  */
 export const uploadAudio = async (filename: string) => {
   const storage = new sdk.Storage(client);
-
-  // Upload audio file to Appwrite bucket
   try {
     const file = await storage.createFile(
-      bucketId,
+      APPWRITE_STORAGE_BUCKET_ID,
       sdk.ID.unique(),
       InputFile.fromPath(`./uploads/${filename}`, filename),
       [
@@ -54,7 +64,9 @@ export const uploadAudio = async (filename: string) => {
       ]
     );
 
-    return { audioUrl: file.$id };
+    return {
+      audioUrl: `${APPWRITE_ENDPOINT}/storage/buckets/${APPWRITE_STORAGE_BUCKET_ID}/files/${file.$id}/view?project=${APPWRITE_PROJECT_ID}`,
+    };
   } catch (error: any) {
     log("Error uploading file: " + error);
     throw new Error(error);

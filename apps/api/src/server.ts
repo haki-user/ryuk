@@ -2,6 +2,7 @@ import { json, urlencoded } from "body-parser";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import "dotenv/config";
 import { router } from "./routes";
 
 export const createServer = () => {
@@ -12,7 +13,7 @@ export const createServer = () => {
     .use(json())
     .use(cors())
     .use(morgan("dev"))
-    .use(router)
+    .use(router);
 
   return app;
 };
