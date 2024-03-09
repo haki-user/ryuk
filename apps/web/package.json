@@ -9,11 +9,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "@radix-ui/react-navigation-menu": "^1.1.4",
     "@ryuk/ui": "*",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.352.0",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^2.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
