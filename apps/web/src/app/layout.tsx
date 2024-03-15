@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "Ryuk",
@@ -14,7 +16,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}</body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableColorScheme
+          disableTransitionOnChange
+        >
+          <Navbar />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

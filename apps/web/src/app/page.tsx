@@ -1,9 +1,10 @@
 "use client";
 
+// import Image from "next/image";
 import { Button } from "@ryuk/ui/button";
 import { useEffect, useState } from "react";
 
-const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3001";
+const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
 export default function Web() {
   const [name, setName] = useState<string>("");
@@ -20,7 +21,6 @@ export default function Web() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       const result = await fetch(`${API_HOST}/message/${name}`);
       const response = await result.json();
@@ -37,6 +37,18 @@ export default function Web() {
 
   return (
     <div>
+      {/* <div className="absolute top-0 left-0 w-full h-full bg opacity-50 z-[-1]">
+        <Image
+          src="./Doubs.svg"
+          alt="bg"
+          fill
+          // width={1600}
+          // height={1200}
+          sizes="100%"
+          className="z-[-1]"
+          objectFit="cover"
+        />
+      </div> */}
       <h1>Web</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="name">Name </label>

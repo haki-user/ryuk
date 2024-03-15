@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import { uploadAudioController } from "../controllers/storage";
 import { transcribeAudioController } from "../controllers/stt";
+import { responseController } from "../controllers/llm";
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -34,4 +35,9 @@ router.post(
   "/audio/transcribe",
   multer({ storage }).single("audio"),
   transcribeAudioController
+);
+router.post(
+  "/response",
+  multer({ storage }).single("audio"),
+  responseController
 );

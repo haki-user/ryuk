@@ -46,3 +46,9 @@ uploads/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# secrets
+.env
+.env.local
+.env.development
+.env.production
