@@ -17,39 +17,27 @@ import {
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
+    title: "AI Assistant",
+    href: "/ryuk",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "Ryuk is a software agent that can perform tasks or services for an individual. These tasks or services are based on user input. An AI assistant uses natural language processing (NLP) to understand and respond to user requests.",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
+    title: "Summarize",
+    href: "/summarize",
     description:
-      "For sighted users to preview content available behind a link.",
+      "From a video or audio file, Ryuk can summarize the content and provide a brief overview of the content.",
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
+    title: "Transcribe",
+    href: "/transcribe",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "Ryuk can convert speech to text. This is useful for people who are unable to type or write.",
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    title: "Translate",
+    href: "/translate",
+    description: "Ryuk can translate text from one language to another.",
   },
 ];
 
@@ -69,30 +57,26 @@ export function Navbar() {
                   >
                     <Icons.logo className="h-6 w-6" />
                     <div className="mb-2 mt-4 text-lg font-medium">
-                      shadcn/ui
+                      Ryuk
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
-                      Beautifully designed components that you can copy and
-                      paste into your apps. Accessible. Customizable. Open
-                      Source.
+                      AI Companion that can help you in your learning journey.
+                      You can use Ryuk to learn new languages and boost your confidence in speaking English.
                     </p>
                   </a>
                 </NavigationMenuLink>
               </li>
               <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
+                Get started with Ryuk.
               </ListItem>
               <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
+                Install Ryuk on your device.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Features</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {components.map((component) => (

@@ -27,6 +27,10 @@ export default function Page() {
     },
   ]);
   const AIPlay = useRef<HTMLButtonElement>(null);
+  const conversationEndRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    conversationEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const synth = window.speechSynthesis;
@@ -36,31 +40,34 @@ export default function Page() {
       AIPlay.current.click();
     }
     // const speech = new Speech() // will throw an exception if not browser supported
-// if(speech.hasBrowserSupport()) { // returns a boolean
+    // if(speech.hasBrowserSupport()) { // returns a boolean
     // console.log("speech synthesis supported")
-// }
+    // }
     // speech.speak({
     // text: 'Hello, how are you today ?',
     // queue: false, // current speech will be interrupted,
     // listeners: {
-        // onstart: () => {
-            // console.log("Start utterance")
-        // },
-        // onend: () => {
-            // console.log("End utterance")
-        // },
-        // onresume: () => {
-            // console.log("Resume utterance")
-        // },
-        // onboundary: (event) => {
-            // console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-        // }
+    // onstart: () => {
+    // console.log("Start utterance")
+    // },
+    // onend: () => {
+    // console.log("End utterance")
+    // },
+    // onresume: () => {
+    // console.log("Resume utterance")
+    // },
+    // onboundary: (event) => {
+    // console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
     // }
-// }).then(() => {
+    // }
+    // }).then(() => {
     // console.log("Success !")
-// }).catch(e => {
+    // }).catch(e => {
     // console.error("An error occurred :", e)
-// })
+    // })
+    if (conversationEndRef) {
+      scrollToBottom();
+    }
     return () => {
       synth.cancel();
     };
@@ -121,17 +128,25 @@ export default function Page() {
     <div className="w-full h-full bg-red-500">
       <div className="w-full h-full bg-black text-text_light">
         {/* <h1 className="text-center">Audio Transcription</h1> */}
-        <div className="flex flex-col items-center mt-4">
-          <div className="flex flex-col gap-2">
+        <div className="pt-4 w-full pl-16 h-[62vh] overflow-y-scroll bg-stone-800">
+          <div className="flex flex-col h-full gap-2">
             {conversation.map((c, i) => {
               return (
-                <div key={i} className="flex border-[1px] p-1 border-white">
-                  <div className="mr-4 capitalize">{c.speaker}:</div>
+                <div
+                  key={i}
+                  className={`flex ${i !== conversation.length - 1 ? "border-b-[1px]" : "mb-2"} p-1 border-stone-400 `}
+                >
+                  <div className="mr-4 capitalize text-[#cccc]">
+                    {c.speaker}:
+                  </div>
                   <div>{c.text}</div>
                 </div>
               );
             })}
+            <div ref={conversationEndRef} />
           </div>
+        </div>
+        <div className="border-t-2 h-[30%] border-stone-600 absolute bottom-0 left-0 w-full bg-black">
           <div className="flex items-center justify-center mt-4">
             <AudioRecorder
               classes={{
@@ -147,18 +162,18 @@ export default function Page() {
               downloadFileExtension="webm"
             />
           </div>
+          {audioBlob && (
+            <div className="w-full flex flex-col items-center justify-center mt-4 gap-2">
+              <audio controls src={URL.createObjectURL(audioBlob)} />
+              <button
+                onClick={() => handleAudioUpload(audioBlob)}
+                className="px-4 py-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] shadow-gray-700 bg-black cursor-pointer hover:bg-zinc-900 rounded-full text-text_light"
+              >
+                Transcribe
+              </button>
+            </div>
+          )}
         </div>
-        {audioBlob && (
-          <div className="w-full flex flex-col items-center justify-center mt-4 gap-2">
-            <audio controls src={URL.createObjectURL(audioBlob)} />
-            <button
-              onClick={() => handleAudioUpload(audioBlob)}
-              className="px-4 py-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] shadow-gray-700 bg-black cursor-pointer hover:bg-zinc-900 rounded-full text-text_light"
-            >
-              Transcribe
-            </button>
-          </div>
-        )}
       </div>
       <div className="hidden">
         <button id="play-button" ref={AIPlay} onClick={handlePlay}>
