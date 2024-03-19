@@ -41,19 +41,19 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Summarize",
-    href: "/summarize",
+    href: "/ryuk/summarize",
     description:
       "From a video or audio file, Ryuk can summarize the content and provide a brief overview of the content.",
   },
   {
     title: "Transcribe",
-    href: "/transcribe",
+    href: "/ryuk/transcribe",
     description:
       "Ryuk can convert speech to text. This is useful for people who are unable to type or write.",
   },
   {
     title: "Translate",
-    href: "/translate",
+    href: "/ryuk/translate",
     description: "Ryuk can translate text from one language to another.",
   },
 ];

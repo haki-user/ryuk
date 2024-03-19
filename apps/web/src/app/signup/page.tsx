@@ -121,7 +121,7 @@ export default function SignupPage() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Register</CardTitle>
         <CardDescription>
-          Enter your details to Create to your account
+          Enter your details to Create your account
         </CardDescription>
       </CardHeader>
       <CardContent>

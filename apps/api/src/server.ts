@@ -1,7 +1,7 @@
 // import { json, urlencoded } from "body-parser";
 // import express from "express";
-// import cors from "cors";
-// import morgan from "morgan";
+import cors from "cors";
+import morgan from "morgan";
 import "dotenv/config";
 // import { router } from "./routes";
 //
@@ -40,8 +40,13 @@ export const createServer = (): Servers => {
   });
 
   // Middleware
-  app.use(express.json());
-  app.use("/api", router);
+  // app.use("/api", router);
+  app
+    .use(express.json())
+    .disable("x-powered-by")
+    .use(cors())
+    .use(morgan("dev"))
+    .use(router);
 
   // Initialize WebSocket server
   initSocket(wsServer);
