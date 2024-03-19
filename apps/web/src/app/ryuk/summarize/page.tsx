@@ -22,14 +22,17 @@ export default function Component() {
     formData.append("audio", file);
     console.log("Uploading audio to server...", formData);
     try {
-      const response = await fetch("http://localhost:3001/summarize", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3001"}/summarize`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await response.json();
       setSummary(data.summary);
     } catch (error) {
-      console.error("Error: xxxxx", error);
+      console.error("Error:", error);
     }
   };
 
