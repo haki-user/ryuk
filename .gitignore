@@ -35,9 +35,6 @@ yarn-error.log*
 # turbo
 .turbo
 
-# uploads
-uploads/
-
 # yarn v4
 .pnp.*
 .yarn/*
