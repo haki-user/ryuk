@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "build:api": "turbo run build:api",
+    "build:api": "turbo run --filter=api build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
