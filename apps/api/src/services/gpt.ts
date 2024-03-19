@@ -1,8 +1,7 @@
 import OpenAI from "openai";
 
 const OPENAI_API_KEY =
-  process.env.OPENAI_API_KEY ||
-  "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";
+  process.env.OPENAI_API_KEY;
 if (!OPENAI_API_KEY) {
   throw new Error("OpenAI environment variable not set");
 }
