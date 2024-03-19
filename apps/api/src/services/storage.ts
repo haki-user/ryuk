@@ -56,7 +56,7 @@ export const uploadAudio = async (filename: string) => {
     const file = await storage.createFile(
       APPWRITE_STORAGE_BUCKET_ID,
       sdk.ID.unique(),
-      InputFile.fromPath(`./uploads/${filename}`, filename),
+      InputFile.fromPath(`./uploads/${filename}`, Date.now()+"webm"),
       [
         Permission.read(Role.any()),
         Permission.update(Role.any()),

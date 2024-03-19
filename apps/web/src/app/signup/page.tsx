@@ -154,7 +154,7 @@ export default function SignupPage() {
               id="password"
               required
               type="password"
-              value={email}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>

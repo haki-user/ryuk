@@ -52,3 +52,6 @@ uploads/
 .env.local
 .env.development
 .env.production
+
+#
+.convo

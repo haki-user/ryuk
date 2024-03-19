@@ -5,12 +5,11 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { useUserContext } from "@/context/auth-context";
+import { socket } from "../../socket";
 // import { Progress } from "@/components/ui/progress";
-// import Speech from 'speak-tts'
 
 interface Conversation {
   id?: string;
-  // user or bot, // propmt and response
   speaker: "user" | "AI";
   text: string;
   audio?: Blob;
@@ -41,48 +40,24 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const synth = window.speechSynthesis;
-    console.log("use effect");
-    if (AIPlay.current) {
-      console.log("click", AIPlay.current);
-      AIPlay.current.click();
+    // Connect to the WebSocket server
+    function onError(error: Error) {
+      console.log(`WebSocket server error: ${error.message}`);
     }
-
-    if (conversationEndRef) {
-      scrollToBottom();
-    }
-    return () => {
-      synth.cancel();
-    };
-  }, [conversation, AIPlay.current]);
-
-  const handleAudio = (blob: Blob) => {
-    setAudioBlob(blob);
-    handleAudioUpload(blob);
-  };
-
-  const handleAudioUpload = async (audioBlob: Blob) => {
-    try {
-      setIsLoading(true);
-      const formData = new FormData();
-      formData.append("audio", audioBlob);
-      const response = await fetch("http://localhost:3001/response", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
+    function onMessage(message: any) {
+      console.log("mm", message);
       setConversation((prev) => [
         ...prev,
         {
           speaker: "user",
-          text: data.transcript,
+          text: message.transcript,
         },
         {
           speaker: "AI",
-          text: data.response,
+          text: message.response,
         },
       ]);
-      const binaryString = atob(data.base64AudioData);
+      const binaryString = atob(message.base64AudioData);
 
       // Create a Uint8Array from the binary string
       const bytes = new Uint8Array(binaryString.length);
@@ -99,6 +74,28 @@ export default function Page() {
       // Create an <audio> element and play the audio
       const audio = new Audio(audioUrl);
       audio.play();
+    }
+    socket.on("error", onError);
+    socket.on("message", onMessage);
+
+    return () => {
+      socket.off("error", onError);
+      socket.off("message", onMessage);
+    };
+  }, []);
+
+  const handleAudio = (blob: Blob) => {
+    setAudioBlob(blob);
+    // handleAudioUpload(blob);
+    console.log("Uploading audio to server...");
+    socket.emit("audio", blob);
+  };
+
+  const handleAudioUpload = async (blob: Blob) => {
+    try {
+      setIsLoading(true);
+      socket.emit("audio", blob);
+      // console.log("audio uploaded", audioBlob);
     } catch (e) {
       console.log(e);
     } finally {
@@ -130,7 +127,6 @@ export default function Page() {
   //   synth.cancel();
   //   setIsPaused(false);
   // };
-  console.log("dfsdf", { user });
 
   return (
     <div className="w-full h-full bg-red-500">
