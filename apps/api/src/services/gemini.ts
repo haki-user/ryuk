@@ -45,8 +45,7 @@ export const chat = async ({ prompt }: { prompt: string }) => {
       const response = await result.response;
       const text = response.text();
       const history = await chat.getHistory();
-      console.log("zz", ...history);
-      if (!text) return response.text;
+      if (!text) return response.text();
       return text;
     } catch (e) {
       log("error " + e);
@@ -66,7 +65,8 @@ export const chat = async ({ prompt }: { prompt: string }) => {
   // };
   // await loop();
   // log(text);
-  return getRes(prompt);
+  const response = await getRes(prompt);
+  return response;
 };
 // chat({
 // prompt:

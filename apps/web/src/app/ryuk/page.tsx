@@ -5,6 +5,7 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { useUserContext } from "@/context/auth-context";
+// import { Progress } from "@/components/ui/progress";
 // import Speech from 'speak-tts'
 
 interface Conversation {
@@ -18,6 +19,9 @@ interface Conversation {
 export default function Page() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [progress, setProgress] = useState<number>(0);
+
   const { user } = useUserContext();
 
   const [conversation, setConversation] = useState<Conversation[]>([
@@ -43,32 +47,7 @@ export default function Page() {
       console.log("click", AIPlay.current);
       AIPlay.current.click();
     }
-    // const speech = new Speech() // will throw an exception if not browser supported
-    // if(speech.hasBrowserSupport()) { // returns a boolean
-    // console.log("speech synthesis supported")
-    // }
-    // speech.speak({
-    // text: 'Hello, how are you today ?',
-    // queue: false, // current speech will be interrupted,
-    // listeners: {
-    // onstart: () => {
-    // console.log("Start utterance")
-    // },
-    // onend: () => {
-    // console.log("End utterance")
-    // },
-    // onresume: () => {
-    // console.log("Resume utterance")
-    // },
-    // onboundary: (event) => {
-    // console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-    // }
-    // }
-    // }).then(() => {
-    // console.log("Success !")
-    // }).catch(e => {
-    // console.error("An error occurred :", e)
-    // })
+
     if (conversationEndRef) {
       scrollToBottom();
     }
@@ -79,28 +58,52 @@ export default function Page() {
 
   const handleAudio = (blob: Blob) => {
     setAudioBlob(blob);
+    handleAudioUpload(blob);
   };
 
   const handleAudioUpload = async (audioBlob: Blob) => {
-    const formData = new FormData();
-    formData.append("audio", audioBlob);
-    const response = await fetch("http://localhost:3001/response", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    setConversation((prev) => [
-      ...prev,
-      {
-        speaker: "user",
-        text: data.transcript,
-      },
-      {
-        speaker: "AI",
-        text: data.response,
-      },
-    ]);
-    console.log(data);
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("audio", audioBlob);
+      const response = await fetch("http://localhost:3001/response", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      setConversation((prev) => [
+        ...prev,
+        {
+          speaker: "user",
+          text: data.transcript,
+        },
+        {
+          speaker: "AI",
+          text: data.response,
+        },
+      ]);
+      const binaryString = atob(data.base64AudioData);
+
+      // Create a Uint8Array from the binary string
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      // Create a Blob from the Uint8Array
+      const blob = new Blob([bytes], { type: "audio/mpeg" });
+
+      // Create a URL for the Blob
+      const audioUrl = URL.createObjectURL(blob);
+
+      // Create an <audio> element and play the audio
+      const audio = new Audio(audioUrl);
+      audio.play();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePlay = async () => {
@@ -127,7 +130,7 @@ export default function Page() {
   //   synth.cancel();
   //   setIsPaused(false);
   // };
-  console.log("dfsdf", { user })
+  console.log("dfsdf", { user });
 
   return (
     <div className="w-full h-full bg-red-500">
@@ -153,7 +156,7 @@ export default function Page() {
                     ""
                   )}
                   <div className="mr-4 capitalize text-[#cccc]">
-                    {c.speaker==="AI"?"AI:":"You:"}
+                    {c.speaker === "AI" ? "AI:" : "You:"}
                   </div>
                   <div>{c.text}</div>
                 </div>
@@ -164,22 +167,40 @@ export default function Page() {
         </div>
         <div className="border-t-2 h-[30%] border-stone-600 absolute bottom-0 left-0 w-full bg-black">
           <div className="flex items-center justify-center mt-4">
-            <AudioRecorder
-              classes={{
-                AudioRecorderClass:
-                  "max-w-10 max-h-10 hidden text-white invert",
-              }}
-              onRecordingComplete={handleAudio}
-              audioTrackConstraints={{
-                noiseSuppression: true,
-                echoCancellation: true,
-              }}
-              downloadOnSavePress={false}
-              downloadFileExtension="webm"
-            />
+            {!isLoading ? (
+              <AudioRecorder
+                classes={{
+                  AudioRecorderClass:
+                    "max-w-10 max-h-10 hidden text-white invert",
+                }}
+                onRecordingComplete={handleAudio}
+                audioTrackConstraints={{
+                  noiseSuppression: true,
+                  echoCancellation: true,
+                }}
+                downloadOnSavePress={false}
+                downloadFileExtension="webm"
+              />
+            ) : (
+              // <Progress value={progress} className="w-[30%]" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={cn("animate-spin")}
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+            )}
           </div>
           {audioBlob && (
-            <div className="w-full flex flex-col items-center justify-center mt-4 gap-2">
+            <div className="hidden w-full flex-col items-center justify-center mt-4 gap-2">
               <audio controls src={URL.createObjectURL(audioBlob)} />
               <button
                 onClick={() => handleAudioUpload(audioBlob)}
