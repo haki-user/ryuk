@@ -95,7 +95,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 
-export function CopyToClipboad({ text }: { text: string }) {
+function CopyToClipboad({ text }: { text: string }) {
   return (
     <>
       <TooltipProvider>
