@@ -2,6 +2,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
+import { useUserContext } from "@/context/auth-context";
 // import Speech from 'speak-tts'
 
 interface Conversation {
@@ -15,6 +18,7 @@ interface Conversation {
 export default function Page() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const { user } = useUserContext();
 
   const [conversation, setConversation] = useState<Conversation[]>([
     {
@@ -123,21 +127,33 @@ export default function Page() {
   //   synth.cancel();
   //   setIsPaused(false);
   // };
+  console.log("dfsdf", { user })
 
   return (
     <div className="w-full h-full bg-red-500">
       <div className="w-full h-full bg-black text-text_light">
         {/* <h1 className="text-center">Audio Transcription</h1> */}
-        <div className="pt-4 w-full pl-16 h-[62vh] overflow-y-scroll bg-stone-800">
+        <div className="pt-4 w-full pl-16 h-[62vh] overflow-y-scroll bg-zinc-800">
           <div className="flex flex-col h-full gap-2">
             {conversation.map((c, i) => {
               return (
                 <div
                   key={i}
-                  className={`flex ${i !== conversation.length - 1 ? "border-b-[1px]" : "mb-2"} p-1 border-stone-400 `}
+                  className={`flex ${i !== conversation.length - 1 ? "border-b-[1px]" : "mb-2"} p-1 border-stone-400 gap-2 flex-wrap items-center`}
                 >
+                  {c.speaker === "user" ? (
+                    <Avatar className={cn("w-4 h-4")}>
+                      <AvatarImage
+                        src={user.imageUrl || "https://github.com/shadcn.png"}
+                        alt="@shadcn"
+                      />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    ""
+                  )}
                   <div className="mr-4 capitalize text-[#cccc]">
-                    {c.speaker}:
+                    {c.speaker==="AI"?"AI:":"You:"}
                   </div>
                   <div>{c.text}</div>
                 </div>

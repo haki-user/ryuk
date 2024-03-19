@@ -6,7 +6,15 @@
     "build": {
       "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
       "dependsOn": ["^build"],
-      "env": ["NEXT_PUBLIC_API_HOST"]
+      "env": [
+        "NEXT_PUBLIC_API_HOST",
+        "NEXT_PUBLIC_APPWRITE_ENDPOINT",
+        "NEXT_PUBLIC_APPWRITE_PROJECT_ID",
+        "NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID",
+        "NEXT_PUBLIC_APPWRITE_DATABASE_ID",
+        "NEXT_PUBLIC_APPWRITE_STORAGE_ID",
+        "NEXT_PUBLIC_APPWRITE_HISTORY_COLLECTION_ID"
+      ]
     },
     "test": {
       "outputs": ["coverage/**"],

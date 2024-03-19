@@ -7,8 +7,13 @@
 import { log } from "@ryuk/logger";
 import { AssemblyAI } from "assemblyai";
 
+const ASSEMBLYAI_API_KEY = process.env.ASSEMBLYAI_API_KEY;
+if (!ASSEMBLYAI_API_KEY) {
+  throw new Error("ASSEMBLYAI_API_KEY is not defined");
+}
+
 const client = new AssemblyAI({
-  apiKey: "b1cc52f1568b47af80f2bbee69fa6de8",
+  apiKey: ASSEMBLYAI_API_KEY,
 });
 
 const ex =

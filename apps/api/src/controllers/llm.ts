@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { chat } from "../services/llm";
+import { chat } from "../services/gemini";
 import { transcribeAudio } from "../services/stt";
 import { uploadAudio } from "../services/storage";
 import { log } from "@ryuk/logger";
