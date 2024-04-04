@@ -12,6 +12,8 @@
     "build:web": "turbo run --filter=web build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
+    "dev:api": "turbo run --filter=api  dev",
+    "dev:web": "turbo run --filter=web  dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test"
