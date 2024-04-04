@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import {
   CardTitle,
   CardDescription,
@@ -19,10 +21,21 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const { toast } = useToast();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const {
+    isAuthenticated,
+    checkAuthUser,
+    isLoading: isUserLoading,
+  } = useUserContext();
+  const router = useRouter();
 
-  const login = async () => {
-    // const session = await account.createEmailSession(email, password);
+  useEffect(() => {
+    if (!isUserLoading && isAuthenticated) {
+      router.back();
+    }
+  }, [isUserLoading, isAuthenticated]);
+
+  const login = async (e: React.FormEvent) => {
+    e.preventDefault();
     const session = await signInAccount({ email, password });
     console.log(session);
     if (!session) {
@@ -48,33 +61,36 @@ const LoginPage = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              placeholder="m@example.com"
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <form onSubmit={login}>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                placeholder="m@example.com"
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                required
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <Button className="w-full" type="submit">
+              Login
+            </Button>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              required
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <Button className="w-full" type="submit" onClick={login}>
-            Login
-          </Button>
-        </div>
+        </form>
       </CardContent>
+      <div className="absolute bg-[#2db963] radius-[24px] rotate-[35deg] w-[100px] h-[350px] top-[200px] sm:w-[260px] sm:top-[70px] md:top-[70px] sm:h-[400px] blur-3xl sm:blur-[150px] animate-shadow-slide "></div>
     </Card>
   );
 };

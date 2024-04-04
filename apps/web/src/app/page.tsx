@@ -1,8 +1,9 @@
 "use client";
 
-// import Image from "next/image";
+import Image from "next/image";
 import { Button } from "@ryuk/ui/button";
 import { useEffect, useState } from "react";
+import { Hero } from "@/components/hero";
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
@@ -36,7 +37,7 @@ export default function Web() {
   };
 
   return (
-    <div>
+    <div className="w-full h-full overflow-x-hidden">
       {/* <div className="absolute top-0 left-0 w-full h-full bg opacity-50 z-[-1]">
         <Image
           src="./Doubs.svg"
@@ -49,31 +50,16 @@ export default function Web() {
           objectFit="cover"
         />
       </div> */}
-      <h1>Web</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={onChange}
-        ></input>
-        <Button type="submit">Submit</Button>
-      </form>
-      {error && (
-        <div>
-          <h3>Error</h3>
-          <p>{error}</p>
-        </div>
-      )}
-      {response && (
-        <div>
-          <h3>Greeting</h3>
-          <p>{response.message}</p>
-          <Button onClick={onReset}>Reset</Button>
-        </div>
-      )}
+      <Hero />
+      {/* <div className="absolute top-[100px] right-[-500px] w-full ">
+        <Image
+          width={400}
+          height={400}
+          alt=""
+          className=" mix-blend-multiply "
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyG6_ZdrBQ8rXkS7wECudiGo4c7gzE7vUXEo7RKhG_lQH7nVQMPaaESj_iCNz7F9Z5NN8&usqp=CAU"
+        ></Image>
+      </div> */}
     </div>
   );
 }
