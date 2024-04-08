@@ -24,6 +24,7 @@ import { Server as SocketServer } from "socket.io";
 import express, { Express } from "express";
 import { router } from "./routes";
 import { initSocket } from "./sockets";
+import { rateLimit } from "express-rate-limit";
 
 export interface Servers {
   http: any;
@@ -39,9 +40,16 @@ export const createServer = (): Servers => {
     },
   });
 
-  // Middleware
-  // app.use("/api", router);
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 80, // Limit each IP to 100 requests per `window` 
+    standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    // store: ... , // Redis, Memcached, etc.
+  });
+
   app
+    .use(limiter)
     .use(express.json())
     .disable("x-powered-by")
     .use(cors())

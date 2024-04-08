@@ -2827,6 +2827,7 @@ __metadata:
     esbuild-register: "npm:^3.5.0"
     eslint: "npm:^8.56.0"
     express: "npm:^4.18.2"
+    express-rate-limit: "npm:^7.2.0"
     jest: "npm:^29.7.0"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.36.0"
     morgan: "npm:^1.10.0"
@@ -4862,6 +4863,15 @@ __metadata:
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
   checksum: 10c0/160456d2d647e6019640bd07111634d8c353038d9fa40176afb7cd49b0548bdae83b56d05e907c2cce2300b81cae35d800ef92fefb9d0208e190fa3b7d6bb579
+  languageName: node
+  linkType: hard
+
+"express-rate-limit@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "express-rate-limit@npm:7.2.0"
+  peerDependencies:
+    express: 4 || 5 || ^5.0.0-beta.1
+  checksum: 10c0/5b3d047d14b6de40fea355be8313ea205b4c7ddaa167c3683779038b8a203a62d4d0a995b1f0bb6fc540abfd5923ac9af905d2cf748fc28af1cb24aefd6c718c
   languageName: node
   linkType: hard
 
